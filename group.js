@@ -15,6 +15,9 @@ class Group{
         return this.values.includes(value)
 
     }
+    [Symbol.iterator](){
+        return new GroupIterator(this)
+    }
     static from(iter){
         let newGroup = new Group()
         iter.map(x => newGroup.add(x))
@@ -23,6 +26,22 @@ class Group{
 
     }
 
+}
+
+class GroupIterator{
+    constructor(group){
+        this.index = 0
+        this.value = group.values[this.index]
+        
+    }
+    next(){
+        if (this.index === group.values.length-1) return {done: true}
+        let status = {
+            value: this.value,
+        }
+        this.index++
+        return {status,done:false}
+    }
 }
 
 let group = Group.from([10, 20]);
@@ -34,3 +53,12 @@ group.add(10);
 group.delete(10);
 console.log(group.has(10));
 // → false
+for (let value of Group.from(["a", "b", "c"])) {
+    console.log(value);
+  }
+hasOwnProperty = Symbol("fuck")
+let map = {one: true, two: true, hasOwnProperty: true};
+
+console.log(map[hasOwnProperty]);
+
+ 
